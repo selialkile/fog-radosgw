@@ -17,6 +17,7 @@ module Fog
       request :enable_user
       request :list_users
       request :get_user
+      request :create_new_key
 
       class Mock
         include Utils
