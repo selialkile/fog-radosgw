@@ -8,6 +8,7 @@ module Fog
 
       request_path 'fog/radosgw/requests/storage'
       request :list_buckets
+      request :delete_bucket
 
       class Real
         include Utils
