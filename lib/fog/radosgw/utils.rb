@@ -13,9 +13,12 @@ module Fog
       end
 
       def escape(string)
-        string.gsub(/([^a-zA-Z0-9_.\-~]+)/) {
-          "%" + $1.unpack("H2" * $1.bytesize).join("%").upcase
-        }
+        URI.escape(string)
+      end
+
+      def escape_hash(values = {})
+        val = values.map { |k,v| "#{k}=#{escape(v.to_s)}" }
+        val.join('&')
       end
 
       def signature(params, expires)
