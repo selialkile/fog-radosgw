@@ -5,6 +5,7 @@ module Fog
       class UserAlreadyExists  < Fog::Radosgw::Provisioning::Error; end
       class NoSuchUser  < Fog::Radosgw::Provisioning::Error; end
       class ServiceUnavailable < Fog::Radosgw::Provisioning::Error; end
+      class KeyNotFound < Fog::Radosgw::Provisioning::Error; end
 
       requires :radosgw_access_key_id, :radosgw_secret_access_key
       recognizes :host, :path, :port, :scheme, :persistent, :path_style
@@ -18,6 +19,7 @@ module Fog
       request :list_users
       request :get_user
       request :create_new_key
+      request :delete_key
 
       class Mock
         include Utils

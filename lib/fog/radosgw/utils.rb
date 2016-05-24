@@ -18,6 +18,11 @@ module Fog
         }
       end
 
+      def escape_hash(values = {})
+        val = values.map { |k,v| "#{k}=#{escape(v.to_s)}" }
+        val.join('&')
+      end
+
       def signature(params, expires)
         headers = params[:headers] || {}
 

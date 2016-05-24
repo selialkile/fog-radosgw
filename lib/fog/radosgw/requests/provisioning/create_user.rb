@@ -9,18 +9,18 @@ module Fog
             raise Fog::Radosgw::Provisioning::UserAlreadyExists, "User with user_id #{user_id} already exists."
           end
 
-          path         = "admin/user"
-          user_id      = escape(user_id)
-          display_name = escape(display_name)
-          email        = escape(email)
-          query        = "?uid=#{user_id}&display-name=#{display_name}&email=#{email}&format=json"
-          params       = {
-            :method => 'PUT',
-            :path => path,
-          }
+          path        = "admin/user"
+          params      = { :method => 'PUT', :path => path }
+          values      = {
+            'uid'          => user_id,
+            'display-name' => display_name,
+            'email'        => email,
+            'format'       => 'json'
+          }.merge(options)
+          query = escape_hash(values)
 
           begin
-            response = Excon.put("#{@scheme}://#{@host}/#{path}#{query}",
+            response = Excon.put("#{@scheme}://#{@host}/#{path}?#{query}",
                                  :headers => signed_headers(params))
             if !response.body.empty?
               case response.headers['Content-Type']
@@ -51,10 +51,10 @@ module Fog
 
           secret_key   = rand(1000).to_s
           data[user_id] = {
-            :email        => email, 
-            :user_id      => user_id, 
+            :email        => email,
+            :user_id      => user_id,
             :display_name => display_name,
-            :suspended    => 0, 
+            :suspended    => 0,
             :secret_key   => secret_key,
           }
 
